@@ -2,6 +2,7 @@
     overflow-y: auto;
     height: 224.77px;
     margin: 5px;
+    padding: 5px;
 }
 
 #FreeServerYes::-webkit-scrollbar {
@@ -33,6 +34,12 @@
     width: 97%;
     height: 50px;
     margin: 10px;
+    transition: 0.2s;
+}
+
+.free-server-container:hover {
+    transform: scale(1.02);
+    transition: 0.2s;
 }
 
 .shadow {
@@ -40,7 +47,7 @@
 }
 
 .shadow-offical {
-    filter: drop-shadow(0 0 5px rgb(250, 113, 22))
+    filter: drop-shadow(0 0 5px rgba(250, 113, 22,0.5))
 }
 
 .highlight {
@@ -51,7 +58,7 @@
 }
 
 .highlight-offical {
-    border-color: rgb(250, 113, 22) !important;
+    border-color: rgba(250, 113, 22,0.5) !important;
 }
 
 .TextFix {
@@ -63,4 +70,24 @@
     font-size: 18px !important;
 }.FontSize2 {
     font-size: 13px !important;
+}
+
+.poweredByText {
+    color: rgb(200,200,200);
+}
+
+.rbxserversA {
+    color: #389cff !important;
+}
+
+.rbxserversA:hover {
+    color: #389cff;
+    text-shadow: 0 0 6px currentColor;
+}
+
+.lineBreak {
+    width: 100%;
+    border-bottom: 1px solid rgb(90,90,90);
+    margin-top: .5rem;
+    margin-bottom: .5rem;
 }
