@@ -1,11 +1,9 @@
 {
-  "name": "RoSaver",
-  "action": {
-    "default_popup": "popup.html"
-  },
+  "name": "FreeServer",
+  "action": {},
   "manifest_version": 3,
-  "version": "0.160",
-  "description": "Save your robux from purchasing items!",
+  "version": "0.1",
+  "description": "Provid free vip server on roblox",
   "icons": {
     "16": "images/icon16.png",
     "48": "images/icon48.png",
@@ -14,8 +12,7 @@
   "content_scripts": [
     {
       "js": [
-        "js/jquery.js",
-        "js/popup.js"
+        "js/jquery.js"
       ],
       "matches": [
         "<all_urls>"
@@ -23,7 +20,7 @@
     }
   ],
   "permissions": [
-    "scripting", "storage", "notifications"
+    "scripting"
   ],
   "background": {
     "service_worker": "background.js"
@@ -41,8 +38,7 @@
         "css/*.css",
         "js/*.js",
         "load.js",
-        "background.js",
-        "popup.html"
+        "background.js"
       ],
       "matches": [
         "<all_urls>"

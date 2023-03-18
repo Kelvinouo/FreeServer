@@ -1,4 +1,4 @@
-let rsaver_placeid
+let freeserver
 
 function waitForElm(selector) {
     return new Promise(resolve => {
@@ -20,136 +20,70 @@ function waitForElm(selector) {
     });
 };
 
-async function notification(title, message) {
-    await chrome.runtime.sendMessage({
-        type: "notification",
-        title: title,
-        message: message
-    })
-}
-
-function makePurchase(productID, price, sellerID, csrf) {
-    let postData = JSON.stringify({
-        expectedCurrency: 1,
-        expectedPrice: price,
-        expectedSellerId: sellerID,
-        expectedPromoId: 0,
-        userAssetId: 0,
-        saleLocationType: "Game",
-        saleLocationId: rsaver_placeid
-    })
-    return fetch(
-            `https://economy.roblox.com/v1/purchases/products/${productID}`, {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": csrf,
-                    "Content-Type": "application/json"
-                },
-                credentials: "include",
-                body: postData,
-            })
-        .then((resq) => {
-            console.log(resq)
-            return resq.json();
-        })
-};
-
 (async () => {
-    let storageData = await chrome.storage.local.get()
-
-    if (!storageData.totalSaved) storageData.totalSaved = 0
-    if (!storageData.placeid) storageData.placeid = 0
-    rsaver_placeid = storageData.placeid
-
-    function saveData(object) {
-        chrome.storage.local.set(object)
-    }
-
-    saveData(storageData)
-
-    let PurchaseButton = await waitForElm(".PurchaseButton")
-    PurchaseButton = $(PurchaseButton)
-    console.log("Init RoSaver")
-
-    let requireRobux = $(".text-robux-lg")
-    let robuxContainer = $(".icon-robux-price-container")
-    if (requireRobux.text() === "") return
-
-    let productID = PurchaseButton.attr("data-product-id")
-    let price = PurchaseButton.attr("data-expected-price")
-    let sellerID = PurchaseButton.attr("data-expected-seller-id")
-    let savedRobux
-
-    let imgSrc = ""
-    if ($("span.thumbnail-span > img").length > 0) {
-        imgSrc = $("span.thumbnail-span > img")[0].src
-    }
-
-    let CSRF_Token = ""
-    if ($('meta[name="csrf-token"]').length > 0) {
-        CSRF_Token = $('meta[name="csrf-token"]').attr("data-token")
-    }
-
-    let type = ""
-    if ($(".icon-limited-label").length > 0 || $(".icon-limited-unique-label").length > 0) {
-        type = "limiteds"
-    } else if (window.location.href.indexOf("game-pass") > -1) {
-        type = "gamepasses"
-    } else {
-        type = "items"
-    }
-
-    if (!storageData.placeid || rsaver_placeid == 0) {
-        robuxContainer.append(`<span class="rsaver-savingRobux">(⚠ set placeid!)</span>`)
-        return
-    }
+    let [, place] = window.location.href.match(/games\/(\d+)\//)
+    let servers = await fetch(`https://api.rbxservers.xyz/games/v1/info/${place}`).then(res => res.json())
     
-    if (type == "gamepasses") {
-        savedRobux = Math.floor(price * 0.1)
-    } else {
-        savedRobux = Math.floor(price * 0.4)
+    if (!servers) return
+    if (servers && servers.servercount < 1) return
+
+    servers.officialservers = servers.officialservers || []
+
+    let tab = $("#rbx-private-game-server-item-container")
+
+    if (tab.length < 1) {
+        $("#rbx-private-running-games").prepend(`
+            <ul id="rbx-private-game-server-item-container" class="card-list rbx-private-game-server-item-container">
+            </ul>
+        `)
     }
 
-    if (type !== "limiteds") {
-        robuxContainer.append(`<span class="rsaver-savingRobux">(💰${savedRobux})</span>`)
-    } else {
-        return
-    }
+    tab = $("#rbx-private-game-server-item-container")
 
-    $(document.body).on("click", () => {
-        if ($("#confirm-btn").length > 0) {
-            // $("#modal-dialog").css("width", "500")
-            let confirmButton = $("#confirm-btn") //decline-btn confirm-btn
+    await tab.prepend(`<li class="rbx-private-game-server-item col-md-3 col-sm-4 col-xs-6">
+        <div id="FreeServerYes">
+        </div>
+        <span class="shadow2 FontSize2">powered by rbxservers.xyz</span>
+    </li>`)
 
-            if (confirmButton.offsetParent()[0].toString() == "[object HTMLHtmlElement]") return
+    let ServerTab = $("#FreeServerYes")
 
-            console.log("clone")
-            let clone = confirmButton.clone()
-            clone.css({
-                "background-color": "#00b06f",
-                "border-color": "#00b06f",
-                "color": "#fff"
-            })
-            clone.addClass("rsaver")
-            clone.html(`Save <span class="icon-robux-16x16 wait-for-i18n-format-render"></span> ${savedRobux}`)
-            clone.prependTo(confirmButton.parent())
-            // confirmButton.remove()
-            clone.on("click", (e) => {
-                e.preventDefault()
-                //if (confirmButton.text() == "Buy Now") {
-                    $("#simplemodal-container").remove()
-                    makePurchase(productID, price, sellerID, CSRF_Token, 0)
-                        .then((resp) => {
-                            console.log(resp)
-                            if (savedRobux !== 0) {
-                                notification("Saved robux from RoSaver!" ,"You saved " + savedRobux + " robux by using RoSaver!")
-                                console.log("sent!")
-                                setTimeout(() => window.location.reload(), 500);
-                            }
-                        })
-                //}
-            })
-        }
+    servers.officialservers.forEach(data => {
+        ServerTab.append(`
+            <a class="font-bold shadow-offical" id="${data.id}">
+                <div class="free-server-container highlight highlight-offical">
+                    <span class="TextFix FontSize1 font-bold">
+                        ${data.name}
+                    </span>
+                    <span class="TextFix font-bold">
+                        ${data.lastupdate}
+                    </span>
+                </div>
+            </a>
+        `)
     });
+
+    for (let i = 0; i < (servers.servers.length > 50 && 50 || servers.servers.length); i++) {
+        const data = servers.servers[i];
+        ServerTab.append(`
+        <a class="font-bold shadow" id="${data.id}">
+            <div class="free-server-container highlight">
+                <span class="TextFix FontSize1 font-bold">
+                    ${data.name}
+                </span>
+                <span class="TextFix font-bold">
+                    ${data.lastupdate}
+                </span>
+            </div>
+        </a>
+    `)
+    }
+
+    $("#FreeServerYes").on("click", "a", async function(e) {
+        e.preventDefault()
+        let id = $(this).attr("id")
+        let res = await fetch(`https://api.rbxservers.xyz/servers/v1/info/${id}`).then(res => res.json())
+        window.open(`https://www.roblox.com/games/2753915549?privateServerLinkCode=${res["server-linkcode"]}`)
+    })
 
 })();
