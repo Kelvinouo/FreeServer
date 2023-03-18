@@ -24,7 +24,7 @@ function waitForElm(selector) {
     let [, place] = window.location.href.match(/games\/(\d+)\//)
     let servers = await fetch(`https://api.rbxservers.xyz/games/v1/info/${place}`).then(res => res.json())
     
-    if (!servers || servers.error || !servers.success) return
+    if (!servers || servers.error) return
     if (servers && servers.servercount < 1) return
 
     servers.officialservers = servers.officialservers || []
