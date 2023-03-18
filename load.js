@@ -43,7 +43,7 @@ function waitForElm(selector) {
     await tab.prepend(`<li class="rbx-private-game-server-item col-md-3 col-sm-4 col-xs-6">
         <div id="FreeServerYes">
         </div>
-        <span class="shadow2 FontSize2">powered by <a href="rbxservers.xyz">rbxservers.xyz</a></span>
+        <span class="shadow2 FontSize2">powered by <a href="https://rbxservers.xyz">rbxservers.xyz</a></span>
     </li>`)
 
     let ServerTab = $("#FreeServerYes")
@@ -53,7 +53,7 @@ function waitForElm(selector) {
             <a class="font-bold shadow-offical" id="${data.id}">
                 <div class="free-server-container highlight highlight-offical">
                     <span class="TextFix FontSize1 font-bold">
-                        ${data.name}
+                        ✅ ${data.name}
                     </span>
                     <span class="TextFix font-bold">
                         ${data.lastupdate}
