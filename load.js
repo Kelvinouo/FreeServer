@@ -43,7 +43,7 @@ function waitForElm(selector) {
     await tab.prepend(`<li class="rbx-private-game-server-item col-md-3 col-sm-4 col-xs-6">
         <div id="FreeServerYes">
         </div>
-        <span class="shadow2 FontSize2">powered by rbxservers.xyz</span>
+        <span class="shadow2 FontSize2">powered by <a href="rbxservers.xyz">rbxservers.xyz</a></span>
     </li>`)
 
     let ServerTab = $("#FreeServerYes")
@@ -83,7 +83,7 @@ function waitForElm(selector) {
         e.preventDefault()
         let id = $(this).attr("id")
         let res = await fetch(`https://api.rbxservers.xyz/servers/v1/info/${id}`).then(res => res.json())
-        window.open(`https://www.roblox.com/games/2753915549?privateServerLinkCode=${res["server-linkcode"]}`)
+        window.open(`https://www.roblox.com/games/${place}?privateServerLinkCode=${res["server-linkcode"]}`)
     })
 
 })();
