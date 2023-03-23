@@ -43,7 +43,7 @@ function waitForElm(selector) {
     await tab.prepend(`<li class="rbx-private-game-server-item col-md-3 col-sm-4 col-xs-6">
         <div id="FreeServerYes">
         </div>
-        <span class="shadow2 FontSize2 poweredByText">powered by <a href="https://rbxservers.xyz" class="rbxserversA">rbxservers.xyz</a></span>
+        <span class="shadow2 FontSize2 poweredByText">powered by <a href="https://rbxservers.xyz/games/${place}" class="rbxserversA">rbxservers.xyz</a></span>
     </li>`)
 
     let ServerTab = $("#FreeServerYes")
@@ -52,15 +52,15 @@ function waitForElm(selector) {
         ServerTab.append(`
             <a class="font-bold shadow-offical" id="${data.id}">
                 <div class="free-server-container highlight highlight-offical">
-                    <span class="TextFix FontSize1 font-bold">
-                        ${data.name} ✅
+                    <span class="TextFix FontSize1 font-bold" id="${data.id}-name">
                     </span>
-                    <span class="TextFix font-bold">
-                        ${data.lastupdate}
+                    <span class="TextFix font-bold" id="${data.id}-lastupdate">
                     </span>
                 </div>
             </a>
         `)
+        $(`#${data.id}-name`).text(data.name + " ✅")
+        $(`#${data.id}-lastupdate`).text(data.lastupdate)
     });
 
     if (servers.officialservers.length > 0) {
@@ -70,17 +70,17 @@ function waitForElm(selector) {
     for (let i = 0; i < (servers.servers.length > 50 && 50 || servers.servers.length); i++) {
         const data = servers.servers[i];
         ServerTab.append(`
-        <a class="font-bold shadow" id="${data.id}">
-            <div class="free-server-container highlight">
-                <span class="TextFix FontSize1 font-bold">
-                    ${data.name}
-                </span>
-                <span class="TextFix font-bold">
-                    ${data.lastupdate}
-                </span>
-            </div>
-        </a>
-    `)
+            <a class="font-bold shadow" id="${data.id}">
+                <div class="free-server-container highlight">
+                    <span class="TextFix FontSize1 font-bold" id="${data.id}-name">
+                    </span>
+                    <span class="TextFix font-bold" id="${data.id}-lastupdate">
+                    </span>
+                </div>
+            </a>
+        `)
+        $(`#${data.id}-name`).text(data.name + " ✅")
+        $(`#${data.id}-lastupdate`).text(data.lastupdate)
     }
 
     $("#FreeServerYes").on("click", "a", async function(e) {
