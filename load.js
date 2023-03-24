@@ -79,7 +79,7 @@ function waitForElm(selector) {
                 </div>
             </a>
         `)
-        $(`#${data.id}-name`).text(data.name + " ✅")
+        $(`#${data.id}-name`).text(data.name)
         $(`#${data.id}-lastupdate`).text(data.lastupdate)
     }
 
