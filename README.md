@@ -11,8 +11,6 @@
 
 ---
 
-# **Make sure that you installed BTRblox before using this plugin**
-
 ## FAQ
 
 #### What does this plugin do?
