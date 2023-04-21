@@ -47,5 +47,10 @@
             "https://roblox.com/"
         ]
       }
-    ]
+    ],
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "c97c1e22-e7c9-4ec5-8c4d-ed37883b4b18"
+      }
+    }
   }
