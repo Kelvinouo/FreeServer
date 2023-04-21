@@ -2,7 +2,7 @@
   "name": "FreeServer",
   "action": {},
   "manifest_version": 3,
-  "version": "0.12",
+  "version": "0.13",
   "description": "Finds free Private Servers on Roblox for free!",
   "icons": {
     "16": "images/icon16.png",
