@@ -1,0 +1,56 @@
+{
+    "name": "FreeServer",
+    "action": {},
+    "manifest_version": 3,
+    "version": "0.13",
+    "description": "Finds free Private Servers on Roblox for free!",
+    "icons": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    },
+    "content_scripts": [
+      {
+        "js": [
+          "js/jquery.js",
+          "load.js"
+        ],
+        "matches": [
+            "https://*.roblox.com/games/*"
+        ]
+      }
+    ],
+    "permissions": [
+      "scripting",
+      "tabs"
+    ],
+    "background": {
+      "scripts": ["background.js"]
+    },
+    "host_permissions": [
+      "https://*.roblox.com/games/*",
+      "https://*.roblox.com/",
+      "https://roblox.com/"
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": [
+          "images/*.png",
+          "css/*.css",
+          "js/*.js",
+          "load.js",
+          "background.js"
+        ],
+        "matches": [
+            "https://*.roblox.com/games/*",
+            "https://*.roblox.com/",
+            "https://roblox.com/"
+        ]
+      }
+    ],
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "{c97c1e22-e7c9-4ec5-8c4d-ed37883b4b18}"
+      }
+    }
+  }
